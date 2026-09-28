@@ -14,14 +14,24 @@ export function Logo({ size = "md" }: { size?: "sm" | "md" }) {
   );
 }
 
-export function CTAButton({ className, ...props }: ComponentProps<"button">) {
+type CTAButtonProps = ComponentProps<"button"> & { href?: string; target?: string; rel?: string };
+
+export function CTAButton({ className, href, target, rel, ...props }: CTAButtonProps) {
+  const classes = cn(
+    "w-full cursor-pointer rounded-full bg-cta px-8 py-5 font-display text-lg font-extrabold tracking-wide text-cta-foreground shadow-cta transition-all hover:brightness-110 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cta/40",
+    className,
+  );
+  if (href) {
+    return (
+      <a href={href} target={target} rel={rel} className={classes} onClick={props.onClick}>
+        {props.children}
+      </a>
+    );
+  }
   return (
     <button
       type="button"
-      className={cn(
-        "w-full rounded-full bg-cta px-8 py-5 font-display text-lg font-extrabold tracking-wide text-cta-foreground shadow-cta transition-all hover:brightness-110 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cta/40",
-        className,
-      )}
+      className={classes}
       {...props}
     />
   );

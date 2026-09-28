@@ -443,7 +443,7 @@ function ContentAccordion({ subject }: { subject: Subject }) {
   );
 }
 
-function ValueStack({ onCheckout }: { onCheckout: () => void }) {
+function ValueStack({ checkoutUrl, onCheckout }: { checkoutUrl: string; onCheckout: () => void }) {
   const items = ["Língua Portuguesa", "Matemática", "Informática", "Conteúdo organizado para estudo", "Material para revisão"];
 
   return (
@@ -467,6 +467,9 @@ function ValueStack({ onCheckout }: { onCheckout: () => void }) {
         <p className="mt-2 text-sm font-semibold text-muted-foreground">Economize R$ 111,60 · aproximadamente 74% de economia</p>
         <CTAButton
           className="mt-5 animate-pulse bg-success px-5 py-4 text-base text-success-foreground shadow-none hover:brightness-105 focus-visible:ring-success/40"
+          href={checkoutUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={onCheckout}
         >
           QUERO O PACOTE COMPLETO
@@ -482,10 +485,10 @@ export function ApostilaOffer({ nome }: { nome: string }) {
     track("offer_viewed");
   }, []);
 
+  const checkoutUrl = buildCheckoutUrl(nome);
   const checkout = () => {
     track("checkout_clicked");
     trackMeta("InitiateCheckout");
-    window.location.href = buildCheckoutUrl(nome);
   };
 
   return (
@@ -530,7 +533,7 @@ export function ApostilaOffer({ nome }: { nome: string }) {
         </div>
       </div>
 
-      <ValueStack onCheckout={checkout} />
+      <ValueStack checkoutUrl={checkoutUrl} onCheckout={checkout} />
 
 
     </section>
