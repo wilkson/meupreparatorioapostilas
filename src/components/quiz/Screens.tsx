@@ -2,13 +2,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AnswerCard, CTAButton, Logo, ProgressBar } from "./Primitives";
-import amostra1 from "@/assets/apostila/pagina-1.png.asset.json";
-import amostra2 from "@/assets/apostila/pagina-2.png.asset.json";
-import amostra3 from "@/assets/apostila/pagina-3.png.asset.json";
-import amostra4 from "@/assets/apostila/pagina-4.png.asset.json";
-import amostra5 from "@/assets/apostila/pagina-5.png.asset.json";
-import amostra6 from "@/assets/apostila/pagina-6.png.asset.json";
-import amostra7 from "@/assets/apostila/pagina-7.png.asset.json";
 
 import {
   CHECKOUT_URL,
@@ -333,13 +326,13 @@ const CONTENTS: Record<Subject, { title: string; description: string; topics: st
 };
 
 const CAROUSEL_IMAGES = [
-  { src: amostra1.url, label: "Página real da apostila (1 de 7)" },
-  { src: amostra2.url, label: "Página real da apostila (2 de 7)" },
-  { src: amostra3.url, label: "Página real da apostila (3 de 7)" },
-  { src: amostra4.url, label: "Página real da apostila (4 de 7)" },
-  { src: amostra5.url, label: "Página real da apostila (5 de 7)" },
-  { src: amostra6.url, label: "Página real da apostila (6 de 7)" },
-  { src: amostra7.url, label: "Página real da apostila (7 de 7)" },
+  { src: paginaApostila1, label: "Página real da apostila (1 de 7)" },
+  { src: paginaApostila2, label: "Página real da apostila (2 de 7)" },
+  { src: paginaApostila3, label: "Página real da apostila (3 de 7)" },
+  { src: paginaApostila4, label: "Página real da apostila (4 de 7)" },
+  { src: paginaApostila5, label: "Página real da apostila (5 de 7)" },
+  { src: paginaApostila6, label: "Página real da apostila (6 de 7)" },
+  { src: paginaApostila7, label: "Página real da apostila (7 de 7)" },
 ];
 
 function ApostilaCarousel() {
