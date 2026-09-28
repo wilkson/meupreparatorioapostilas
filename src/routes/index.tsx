@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ApostilaOffer, DiagnosisResult, NameStep, Opening, ProcessingScreen, QuizQuestion } from "@/components/quiz/Screens";
 import { QUESTIONS, computeDiagnosis, type Answers } from "@/lib/quiz-data";
-import { track } from "@/lib/tracking";
+import { track, trackMeta } from "@/lib/tracking";
+import { captureUtms } from "@/lib/utm";
 
 const TITLE = "Quiz de Preparação para Concursos | Meu Preparatório";
 const DESC =
@@ -50,12 +51,18 @@ function QuizPage() {
     }
   }, [nome_lead]);
   useEffect(() => {
+    captureUtms();
+  }, []);
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (stage.kind === "processing") {
       track("quiz_completed");
       timer.current = window.setTimeout(() => setStage({ kind: "result" }), 2200);
     }
-    if (stage.kind === "result") track("result_viewed", { ...diagnosis });
+    if (stage.kind === "result") {
+      track("result_viewed", { ...diagnosis });
+      trackMeta("Lead");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
 
@@ -87,6 +94,7 @@ function QuizPage() {
             onBack={() => setStage({ kind: "opening" })}
             onSubmit={(n) => {
               setNomeLead(n);
+              trackMeta("CompleteRegistration");
               setStage({ kind: "question", index: 0 });
             }}
           />

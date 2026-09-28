@@ -16,7 +16,7 @@ type Params = Record<string, string | number | boolean>;
 interface TrackingWindow {
   dataLayer?: unknown[];
   gtag?: (cmd: "event", name: string, params?: Params) => void;
-  fbq?: (cmd: "trackCustom", name: string, params?: Params) => void;
+  fbq?: (cmd: "track" | "trackCustom", name: string, params?: Params) => void;
 }
 
 export function track(event: TrackingEvent, params: Params = {}): void {
@@ -26,6 +26,20 @@ export function track(event: TrackingEvent, params: Params = {}): void {
     w.dataLayer?.push({ event, ...params });
     w.gtag?.("event", event, params);
     w.fbq?.("trackCustom", event, params);
+  } catch {
+    // Tracking must never break the funnel.
+  }
+}
+
+/** Meta Pixel standard events used by the funnel. */
+export type MetaStandardEvent = "PageView" | "CompleteRegistration" | "Lead" | "InitiateCheckout";
+
+/** Fires a Meta Pixel standard event (fbq "track"). */
+export function trackMeta(event: MetaStandardEvent, params: Params = {}): void {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as TrackingWindow;
+  try {
+    w.fbq?.("track", event, params);
   } catch {
     // Tracking must never break the funnel.
   }
