@@ -4,13 +4,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AnswerCard, CTAButton, Logo, ProgressBar } from "./Primitives";
 
 import {
-  CHECKOUT_URL,
   STATUS_LABEL,
   type QuizQuestionData,
   type Subject,
   type SubjectStatus,
 } from "@/lib/quiz-data";
-import { track } from "@/lib/tracking";
+import { track, trackMeta } from "@/lib/tracking";
+import { buildCheckoutUrl } from "@/lib/utm";
 import paginaApostila1 from "@/assets/uploads/3868.png";
 import paginaApostila2 from "@/assets/uploads/3869.png";
 import paginaApostila3 from "@/assets/uploads/3870.png";
@@ -484,7 +484,8 @@ export function ApostilaOffer({ nome }: { nome: string }) {
 
   const checkout = () => {
     track("checkout_clicked");
-    window.location.href = CHECKOUT_URL;
+    trackMeta("InitiateCheckout");
+    window.location.href = buildCheckoutUrl(nome);
   };
 
   return (
