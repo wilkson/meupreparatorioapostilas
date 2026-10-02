@@ -14,6 +14,8 @@ export default defineConfig({
       server: { entry: "server" },
     }),
     viteReact(),
-    nitro(),
+    // Preset fixo: sem isso o Nitro detecta o runtime que roda o build (bun no
+    // estágio de build do Docker) e gera saída incompatível com o runtime node.
+    nitro({ preset: "node-server" }),
   ],
 });

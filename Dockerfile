@@ -8,6 +8,8 @@ RUN bun install --frozen-lockfile
 
 # Código-fonte e build de produção (saída em .output/)
 COPY . .
+# Garante saída node-server mesmo com o build rodando sob bun
+ENV NITRO_PRESET=node-server
 RUN bun run build
 
 # ---- Runtime ----
