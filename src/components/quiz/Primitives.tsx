@@ -18,7 +18,7 @@ type CTAButtonProps = ComponentProps<"button"> & { href?: string; target?: strin
 
 export function CTAButton({ className, href, target, rel, ...props }: CTAButtonProps) {
   const classes = cn(
-    "w-full cursor-pointer rounded-full bg-cta px-8 py-5 font-display text-lg font-extrabold tracking-wide text-cta-foreground shadow-cta transition-all hover:brightness-110 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cta/40",
+    "flex w-full items-center justify-center text-center cursor-pointer rounded-full bg-cta px-8 py-5 font-display text-lg font-extrabold tracking-wide text-cta-foreground shadow-cta transition-all hover:brightness-110 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cta/40",
     className,
   );
   if (href) {
