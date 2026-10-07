@@ -41,8 +41,17 @@ checkout, origem por UTM e a lista de leads.
 
 Configuração:
 
-1. Defina a env `ADMIN_TOKEN` (senha de acesso ao `/admin`).
-2. Monte um volume em `/data` para os eventos sobreviverem a redeploys:
+1. Defina a env `ADMIN_TOKEN` (senha de acesso ao `/admin`). Duas formas:
+   - **Arquivo `.env`** na raiz do projeto (recomendado — copie de
+     `.env.example`): o servidor lê o `.env` em runtime (não é preciso
+     reiniciar nada além do app; o arquivo nunca é commitado).
+   - **Variável de ambiente real** (`-e ADMIN_TOKEN=...` no Docker, painel de
+     hosting etc.) — tem prioridade sobre o `.env`.
+   - `DATA_DIR` (opcional) também pode ir no `.env`; sem ela os eventos vão
+     para `./data`, que já persiste em hospedagens com diretório próprio
+     (ex.: Plesk).
+2. No Docker, monte um volume em `/data` para os eventos sobreviverem a
+   redeploys:
 
    ```bash
    docker run -e ADMIN_TOKEN=um-segredo-forte -v mp-quiz-data:/data -p 3000:3000 <imagem>

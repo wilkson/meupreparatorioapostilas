@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { buildFunnel, type FunnelPeriod } from "@/server/funnel.server";
+import { env } from "@/server/env.server";
 import { readEvents } from "@/server/store.server";
 
 export type { FunnelReport } from "@/server/funnel.server";
@@ -15,7 +16,7 @@ const getFunnelInput = z.object({
 export const getFunnel = createServerFn({ method: "POST" })
   .inputValidator(getFunnelInput)
   .handler(async ({ data }) => {
-    const expected = process.env.ADMIN_TOKEN;
+    const expected = env("ADMIN_TOKEN");
     if (!expected) throw new Error("ADMIN_TOKEN não configurado no servidor.");
     if (data.token !== expected) throw new Error("Token inválido.");
     const events = await readEvents();

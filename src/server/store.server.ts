@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 import { appendFile, mkdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { env } from "./env.server";
+
 /** Funnel event persisted to the append-only log (one JSON line per event). */
 export interface StoredEvent {
   id: string;
@@ -17,7 +19,7 @@ export interface StoredEvent {
   user_agent?: string;
 }
 
-const DATA_DIR = process.env.DATA_DIR ?? join(process.cwd(), "data");
+const DATA_DIR = env("DATA_DIR") ?? join(process.cwd(), "data");
 const EVENTS_FILE = join(DATA_DIR, "events.jsonl");
 
 /** Serializes writes so concurrent appends never interleave lines. */

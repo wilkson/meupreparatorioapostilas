@@ -31,6 +31,11 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment secrets (loaded by src/server/env.server.ts — never commit)
+.env
+.env.*
+!.env.example
+
 # Funil first-party event log (dados locais, não versionar)
 data/
 
