@@ -19,6 +19,9 @@ FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
+# Funil first-party: eventos gravados em JSONL em /data — monte um volume
+# (ex.: -v mp-quiz-data:/data) para os dados sobreviverem a redeploys.
+ENV DATA_DIR=/data
 
 COPY --from=build /app/.output ./.output
 

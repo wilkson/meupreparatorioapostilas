@@ -1,8 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ApostilaOffer, DiagnosisResult, NameStep, Opening, ProcessingScreen, QuizQuestion } from "@/components/quiz/Screens";
+import {
+  ApostilaOffer,
+  DiagnosisResult,
+  NameStep,
+  Opening,
+  ProcessingScreen,
+  QuizQuestion,
+} from "@/components/quiz/Screens";
 import { QUESTIONS, computeDiagnosis, type Answers } from "@/lib/quiz-data";
-import { track, trackMeta } from "@/lib/tracking";
+import { track, trackFunnel, trackMeta } from "@/lib/tracking";
 import { captureUtms } from "@/lib/utm";
 
 const TITLE = "Quiz de Preparação para Concursos | Meu Preparatório";
@@ -23,7 +30,12 @@ export const Route = createFileRoute("/")({
   component: QuizPage,
 });
 
-type Stage = { kind: "opening" } | { kind: "name" } | { kind: "question"; index: number } | { kind: "processing" } | { kind: "result" };
+type Stage =
+  | { kind: "opening" }
+  | { kind: "name" }
+  | { kind: "question"; index: number }
+  | { kind: "processing" }
+  | { kind: "result" };
 
 const STORAGE_KEY = "mp_quiz_answers";
 
@@ -52,6 +64,7 @@ function QuizPage() {
   }, [nome_lead]);
   useEffect(() => {
     captureUtms();
+    trackFunnel("page_view");
   }, []);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -70,9 +83,16 @@ function QuizPage() {
     const next = [...answers];
     next[index] = option;
     setAnswers(next);
-    track("quiz_question_answered", { question: index + 1, answer: QUESTIONS[index]?.options[option]?.label ?? "" });
+    track("quiz_question_answered", {
+      question: index + 1,
+      answer: QUESTIONS[index]?.options[option]?.label ?? "",
+    });
     timer.current = window.setTimeout(() => {
-      setStage(index + 1 < QUESTIONS.length ? { kind: "question", index: index + 1 } : { kind: "processing" });
+      setStage(
+        index + 1 < QUESTIONS.length
+          ? { kind: "question", index: index + 1 }
+          : { kind: "processing" },
+      );
     }, 450);
   };
 
@@ -95,6 +115,7 @@ function QuizPage() {
             onSubmit={(n) => {
               setNomeLead(n);
               trackMeta("CompleteRegistration");
+              trackFunnel("lead_registered", { name: n });
               setStage({ kind: "question", index: 0 });
             }}
           />
@@ -109,7 +130,9 @@ function QuizPage() {
             onSelect={(o) => select(stage.index, o)}
             onBack={() => {
               window.clearTimeout(timer.current);
-              setStage(stage.index === 0 ? { kind: "name" } : { kind: "question", index: stage.index - 1 });
+              setStage(
+                stage.index === 0 ? { kind: "name" } : { kind: "question", index: stage.index - 1 },
+              );
             }}
           />
         )}
